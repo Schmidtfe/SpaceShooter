@@ -20,7 +20,7 @@ public:
 
 	bool running() { return isRunning; };
 
-	//Player* player;
+	
 	SDL_Texture* tex;
 
 private:
@@ -28,6 +28,8 @@ private:
 	bool isRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	int windowWidth;
+	int windowHeight;
 
 };
 

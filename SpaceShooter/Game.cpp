@@ -1,7 +1,9 @@
 #include "Game.h"
 #include "Entity.h"
+#include "EnemyManager.h"
 
 Entity* player;
+EnemyManager* em;
 
 Game::Game()
 {}
@@ -11,6 +13,8 @@ Game::~Game()
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
+	windowWidth = width;
+	windowHeight = height;
 	if (fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
@@ -40,10 +44,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	//player = new Player();
-	//player->init(renderer, 0, 0, 0, 0);
+	player = new Entity("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, -1);
 
-	player = new Entity("assets/spaceship.png", renderer, 0, 0);
+	em = new EnemyManager(renderer);
 
 
 }
@@ -52,30 +55,78 @@ void Game::input()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 	switch (event.type)
 	{
 	case SDL_QUIT:
 		isRunning = false;
 		break;
 
-	case SDLK_w:
-		
+	case SDL_KEYDOWN:
+		//std::cout << keyState[SDLK_w] << std::endl;
+		if (event.key.keysym.sym == SDLK_w)
+		{
+			if (player->getDirY() >= 0)
+				player->addDirection(0, -1);
+		}
+		if (event.key.keysym.sym == SDLK_a)
+		{
+			if (player->getDirX() >= 0)
+				player->addDirection(-1, 0);
+		}
+		if (event.key.keysym.sym == SDLK_s)
+		{
+			if (player->getDirY() <= 0)
+				player->addDirection(0, 1);
+		}
+		if (event.key.keysym.sym == SDLK_d)
+		{
+			if (player->getDirX() <= 0)
+				player->addDirection(1, 0);
+		}
 		break;
+
+	case SDL_KEYUP:
+		if (event.key.keysym.sym == SDLK_w)
+		{
+			if(player->getDirY() < 0)
+				player->setDirY(0);
+		}
+		if (event.key.keysym.sym == SDLK_a)
+		{
+			if (player->getDirX() < 0)
+				player->setDirX(0);
+		}
+		if (event.key.keysym.sym == SDLK_s)
+		{
+			if (player->getDirY() > 0)
+				player->setDirY(0);
+		}
+		if (event.key.keysym.sym == SDLK_d)
+		{
+			if (player->getDirX() > 0)
+				player->setDirX(0);
+		}
+		break;
+
 	default:
 		break;
 	}
+
 }
 
 void Game::update()
 {
 	count++;
 	player->update();
+	em->update();
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
 	//add stuff to render here
+	em->render();
 	player->render();
 
 	SDL_RenderPresent(renderer);
