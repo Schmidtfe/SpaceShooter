@@ -22,7 +22,7 @@ public:
 	bool running() { return isRunning; };
 
 	void checkForCollision();
-	void pauseAndDestroy();
+	void pauseAndReset();
 	
 	SDL_Texture* tex;
 	int points = 0;

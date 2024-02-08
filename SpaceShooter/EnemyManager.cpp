@@ -10,7 +10,6 @@ EnemyManager::EnemyManager(SDL_Renderer *ren, Game* game)
 	enemyNum = 1;
 	prevEnemyNum = 0;
 	renderer = ren;
-	enemies.resize(1);
 	thisGame = game;
 	std::cout << enemies.size() << std::endl;
 	

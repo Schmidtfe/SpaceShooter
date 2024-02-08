@@ -47,6 +47,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 
 	player = new Entity("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, 4);
+	player->isPlayer = true;
+	player->createLivesDisplay();
+	player->showLivesFor(60 * 3);
 
 	em = new EnemyManager(renderer, this);
 
@@ -143,7 +146,7 @@ void Game::update()
 					checkForCollision();
 		}
 		else {
-			pauseAndDestroy();
+			pauseAndReset();
 		}
 	}
 }
@@ -178,9 +181,9 @@ void Game::checkForCollision()
 				//std::cout << "Player colliding!" << std::endl;
 				int remainingLives = player->takeDamage();
 				std::cout << remainingLives << std::endl;
-				enemy->loadTexture("assets/shatter.png");
+				enemy->setShipTexture("assets/shatter.png");
 				toDestroy = enemy;
-				player->loadTexture("assets/shatter.png");
+				player->setShipTexture("assets/shatter.png");
 				if (remainingLives == 0)
 				{
 					std::cout << "Game Over!" << std::endl;
@@ -195,7 +198,7 @@ void Game::checkForCollision()
 	}
 }
 
-void Game::pauseAndDestroy()
+void Game::pauseAndReset()
 {
 	if (pauseTime > 1) {
 		pauseTime--;
@@ -203,7 +206,8 @@ void Game::pauseAndDestroy()
 	else {
 		pauseTime--;
 		player->setPosition( glm::vec2( windowWidth / 2, windowHeight * 7 / 8));
-		player->loadTexture("assets/spaceship.png");
+		player->setShipTexture("assets/spaceship.png");
+		player->showLivesFor(60 * 3);
 		player->setInvincible(60 * 3);
 		if (toDestroy)
 			em->removeEnemy(toDestroy);
