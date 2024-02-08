@@ -1,12 +1,13 @@
 #pragma once
-#include "Entity.h"
+#include "Ship.h"
 #include <vector>
 #include "Game.h"
+#include "ProjectileManager.h"
 
 class EnemyManager
 {
 public:
-	std::vector<Entity*> enemies;
+	std::vector<Ship*> enemies;
 	EnemyManager(SDL_Renderer* ren, Game* game);
 	~EnemyManager();
 
@@ -17,6 +18,7 @@ public:
 	void createEnemies();
 	int wave;
 	Game* thisGame;
+	ProjectileManager* pm;
 
 private:
 	int cooldown;

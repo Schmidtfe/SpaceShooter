@@ -10,11 +10,10 @@ public:
 	Entity(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed);
 	~Entity();
 
-	void update();
-	void render();
+	virtual void update();
+	virtual void render();
 	SDL_Texture* loadTexture(const char* fileName);
-	void setShipTexture(const char* fileName);
-	void createLivesDisplay();
+	void setTexture(const char* fileName);
 	void addDirection(int x, int y);
 	int getDirX();
 	int getDirY();
@@ -24,23 +23,13 @@ public:
 	glm::vec2 getPosition();
 	void setPosition(glm::vec2 pos);
 	int num;
-	int takeDamage();
-	bool isInvincible();
-	void setInvincible(int time);
-	bool isPlayer = false;
-	void showLivesFor(int time);
 
-private:
+protected:
 	float x;
 	float y;
 	int speed = 4;
 	int lives = 1;
 	glm::vec2 direction;
-	bool invincible = false;
-	int invinCooldown = 0;
-	void blinkAnimation();
-	void setLiveDisplayPos();
-	int liveDisTimer = 60*3;
 
 	SDL_Texture* texture;
 	SDL_Rect texRect, sizeRect;

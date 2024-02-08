@@ -41,14 +41,16 @@ void EnemyManager::update()
 				else {
 					enemies[i]->setDirY(0);
 				}
+
 				if (enemies[i]->getPosition().x <= 33 && enemies[i]->getDirX() < 0)
-				{
 					enemies[i]->setDirX(1);
-				}
+				
 				if (enemies[i]->getPosition().x >= (800-33) && enemies[i]->getDirX() > 0)
-				{
 					enemies[i]->setDirX(-1);
-				}
+
+				if (enemies[i]->getShootCooldown() <= 0)
+					enemies[i]->shootProjectile(pm, glm::vec2(0, 1));
+
 				enemies[i]->update();
 			}
 
@@ -70,7 +72,8 @@ void EnemyManager::addEnemy(int index)
 {
 	//
 	int randomX = 32 + (std::rand() % (800 - 32 - 32 + 1));
-	Entity* enemy = new Entity("assets/enemy.png", renderer, randomX, -33, 2);
+	Ship* enemy = new Ship("assets/enemy.png", renderer, randomX, -33, 2, 0.25f);
+	
 	int randomDir = (std::rand() % 1) * 2 - 1;
 	enemy->setDirX(randomDir);
 	enemies[index] = enemy;

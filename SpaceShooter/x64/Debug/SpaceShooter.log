@@ -1,2 +1,8 @@
-﻿  Game.cpp
+﻿  EnemyManager.cpp
+C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\EnemyManager.cpp(109,35): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Game.cpp
+  Ship.cpp
+C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\Ship.cpp(36,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\Ship.cpp(36,69): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   SpaceShooter.vcxproj -> C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\x64\Debug\SpaceShooter.exe

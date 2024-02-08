@@ -145,15 +145,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ProjectileManager.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SpaceShooter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileManager.h" />
+    <ClInclude Include="Ship.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\spaceship.png" />

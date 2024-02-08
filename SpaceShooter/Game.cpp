@@ -1,9 +1,12 @@
 #include "Game.h"
-#include "Entity.h"
+#include "Actor.h"
 #include "EnemyManager.h"
+#include "Projectile.h"
+#include "ProjectileManager.h"
 
-Entity* player;
+Actor* player;
 EnemyManager* em;
+ProjectileManager* pm;
 
 Game::Game()
 {}
@@ -46,12 +49,14 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	player = new Entity("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, 4);
-	player->isPlayer = true;
+	player = new Actor("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, 4, 2);
 	player->createLivesDisplay();
 	player->showLivesFor(60 * 3);
 
 	em = new EnemyManager(renderer, this);
+
+	pm = new ProjectileManager();
+	em->pm = pm;
 
 
 }
@@ -90,8 +95,7 @@ void Game::input()
 					player->addDirection(1, 0);
 				break;
 			case SDLK_SPACE:
-				if(em->enemies.size() > 0)
-					em->removeEnemy(em->enemies[0]);
+				player->shootProjectile(pm, glm::vec2(0, -1));
 				break;
 			default:
 				break;
@@ -140,6 +144,7 @@ void Game::update()
 		{
 			player->update();
 			em->update();
+			pm->update();
 
 			if (em->enemies.size() > 0)
 				if (em->enemies[0])
@@ -158,6 +163,7 @@ void Game::render()
 	em->render();
 	if(player)
 		player->render();
+	pm->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -181,9 +187,9 @@ void Game::checkForCollision()
 				//std::cout << "Player colliding!" << std::endl;
 				int remainingLives = player->takeDamage();
 				std::cout << remainingLives << std::endl;
-				enemy->setShipTexture("assets/shatter.png");
+				enemy->setTexture("assets/shatter.png");
 				toDestroy = enemy;
-				player->setShipTexture("assets/shatter.png");
+				player->setTexture("assets/shatter.png");
 				if (remainingLives == 0)
 				{
 					std::cout << "Game Over!" << std::endl;
@@ -194,6 +200,7 @@ void Game::checkForCollision()
 					pauseTime = 60 * 1;
 				}
 			}
+
 		}
 	}
 }
@@ -206,7 +213,7 @@ void Game::pauseAndReset()
 	else {
 		pauseTime--;
 		player->setPosition( glm::vec2( windowWidth / 2, windowHeight * 7 / 8));
-		player->setShipTexture("assets/spaceship.png");
+		player->setTexture("assets/spaceship.png");
 		player->showLivesFor(60 * 3);
 		player->setInvincible(60 * 3);
 		if (toDestroy)
