@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\glm;C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\boost_1_84_0\boost_1_84_0;C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\glm;C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

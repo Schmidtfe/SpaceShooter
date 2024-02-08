@@ -4,14 +4,15 @@
 Entity::Entity()
 {}
 
-Entity::Entity(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int index)
+Entity::Entity(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed)
 {
 	renderer = ren;
-	texture = loadTexture(textureSheet);
+	loadTexture(textureSheet);
 	x = xpos;
 	y = ypos;
 	direction = glm::vec2(0.0f, 0.0f);
-	num = index;
+	position = glm::vec2(x, y);
+	speed = moveSpeed;
 }
 
 Entity::~Entity()
@@ -27,6 +28,7 @@ void Entity::update()
 		//std::cout << "(" << velocity.x << ", " << velocity.y << ")" << std::endl;
 	}
 
+	position = glm::vec2(x, y);
 
 	texRect.h = 512;
 	texRect.w = 512;
@@ -41,6 +43,8 @@ void Entity::update()
 
 void Entity::render()
 {
+	if (invincible)
+		blinkAnimation();
 	SDL_RenderCopy(renderer, texture, &texRect, &sizeRect);
 }
 
@@ -49,6 +53,7 @@ SDL_Texture* Entity::loadTexture(const char* fileName)
 	SDL_Surface* tmpSurface = IMG_Load(fileName);
 	SDL_Texture* result = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
+	texture = result;
 	return result;
 }
 
@@ -76,4 +81,47 @@ void Entity::setDirX(int x)
 void Entity::setDirY(int y)
 {
 	direction.y = y;
+}
+
+glm::vec2 Entity::getPosition()
+{
+	return position;
+}
+
+void Entity::setPosition(glm::vec2 pos)
+{
+	x = pos.x;
+	y = pos.y;
+}
+
+int Entity::takeDamage()
+{
+	lives--;
+	return lives;
+}
+
+void Entity::blinkAnimation()
+{
+	invinCooldown--;
+	//std::cout << "Invincibility..." << std::endl;
+	if (invinCooldown / 10 % 2 == 1)
+	{
+		SDL_SetTextureAlphaMod(texture, 0);
+	}
+	else {
+		SDL_SetTextureAlphaMod(texture, 255);
+	}
+	if (invinCooldown <= 0)
+		invincible = false;
+}
+
+bool Entity::isInvincible()
+{
+	return invincible;
+}
+
+void Entity::setInvincible(int time)
+{
+	invincible = true;
+	invinCooldown = time;
 }

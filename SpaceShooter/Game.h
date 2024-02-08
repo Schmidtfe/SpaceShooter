@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <iostream>
+#include <glm.hpp>
 
 class Game
 {
@@ -20,8 +21,11 @@ public:
 
 	bool running() { return isRunning; };
 
+	void checkForCollision();
+	void pauseAndDestroy();
 	
 	SDL_Texture* tex;
+	int points = 0;
 
 private:
 	int count = 0;
@@ -30,6 +34,7 @@ private:
 	SDL_Renderer* renderer;
 	int windowWidth;
 	int windowHeight;
+	int pauseTime = 0;
 
 };
 

@@ -10,6 +10,8 @@ Game::Game()
 Game::~Game()
 {}
 
+Entity* toDestroy;
+
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -44,9 +46,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	player = new Entity("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, -1);
+	player = new Entity("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, 4);
 
-	em = new EnemyManager(renderer);
+	em = new EnemyManager(renderer, this);
 
 
 }
@@ -63,49 +65,60 @@ void Game::input()
 		break;
 
 	case SDL_KEYDOWN:
-		//std::cout << keyState[SDLK_w] << std::endl;
-		if (event.key.keysym.sym == SDLK_w)
+		if (player)
 		{
-			if (player->getDirY() >= 0)
-				player->addDirection(0, -1);
-		}
-		if (event.key.keysym.sym == SDLK_a)
-		{
-			if (player->getDirX() >= 0)
-				player->addDirection(-1, 0);
-		}
-		if (event.key.keysym.sym == SDLK_s)
-		{
-			if (player->getDirY() <= 0)
-				player->addDirection(0, 1);
-		}
-		if (event.key.keysym.sym == SDLK_d)
-		{
-			if (player->getDirX() <= 0)
-				player->addDirection(1, 0);
+			//std::cout << event.key.keysym.sym << std::endl;
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_w:
+				if (player->getDirY() >= 0)
+					player->addDirection(0, -1);
+				break;
+			case SDLK_a:
+				if (player->getDirX() >= 0)
+					player->addDirection(-1, 0);
+				break;
+			case SDLK_s:
+				if (player->getDirY() <= 0)
+					player->addDirection(0, 1);
+				break;
+			case SDLK_d:
+				if (player->getDirX() <= 0)
+					player->addDirection(1, 0);
+				break;
+			case SDLK_SPACE:
+				if(em->enemies.size() > 0)
+					em->removeEnemy(em->enemies[0]);
+				break;
+			default:
+				break;
+			}
 		}
 		break;
 
 	case SDL_KEYUP:
-		if (event.key.keysym.sym == SDLK_w)
+		if (player)
 		{
-			if(player->getDirY() < 0)
-				player->setDirY(0);
-		}
-		if (event.key.keysym.sym == SDLK_a)
-		{
-			if (player->getDirX() < 0)
-				player->setDirX(0);
-		}
-		if (event.key.keysym.sym == SDLK_s)
-		{
-			if (player->getDirY() > 0)
-				player->setDirY(0);
-		}
-		if (event.key.keysym.sym == SDLK_d)
-		{
-			if (player->getDirX() > 0)
-				player->setDirX(0);
+			if (event.key.keysym.sym == SDLK_w)
+			{
+				if (player->getDirY() < 0)
+					player->setDirY(0);
+			}
+			if (event.key.keysym.sym == SDLK_a)
+			{
+				if (player->getDirX() < 0)
+					player->setDirX(0);
+			}
+			if (event.key.keysym.sym == SDLK_s)
+			{
+				if (player->getDirY() > 0)
+					player->setDirY(0);
+			}
+			if (event.key.keysym.sym == SDLK_d)
+			{
+				if (player->getDirX() > 0)
+					player->setDirX(0);
+			}
 		}
 		break;
 
@@ -118,8 +131,21 @@ void Game::input()
 void Game::update()
 {
 	count++;
-	player->update();
-	em->update();
+	if (player)
+	{
+		if (pauseTime <= 0)
+		{
+			player->update();
+			em->update();
+
+			if (em->enemies.size() > 0)
+				if (em->enemies[0])
+					checkForCollision();
+		}
+		else {
+			pauseAndDestroy();
+		}
+	}
 }
 
 void Game::render()
@@ -127,7 +153,8 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	//add stuff to render here
 	em->render();
-	player->render();
+	if(player)
+		player->render();
 
 	SDL_RenderPresent(renderer);
 }
@@ -138,4 +165,47 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;
+}
+
+void Game::checkForCollision()
+{
+	if (em->enemies[0] != nullptr)
+	{
+		for (Entity* enemy : em->enemies)
+		{
+			if (glm::length(player->getPosition() - enemy->getPosition()) < 64 && !player->isInvincible())
+			{
+				//std::cout << "Player colliding!" << std::endl;
+				int remainingLives = player->takeDamage();
+				std::cout << remainingLives << std::endl;
+				enemy->loadTexture("assets/shatter.png");
+				toDestroy = enemy;
+				player->loadTexture("assets/shatter.png");
+				if (remainingLives == 0)
+				{
+					std::cout << "Game Over!" << std::endl;
+					std::cout << "Points: " << points << std::endl;
+					player = nullptr;
+				}
+				else {
+					pauseTime = 60 * 1;
+				}
+			}
+		}
+	}
+}
+
+void Game::pauseAndDestroy()
+{
+	if (pauseTime > 1) {
+		pauseTime--;
+	}
+	else {
+		pauseTime--;
+		player->setPosition( glm::vec2( windowWidth / 2, windowHeight * 7 / 8));
+		player->loadTexture("assets/spaceship.png");
+		player->setInvincible(60 * 3);
+		if (toDestroy)
+			em->removeEnemy(toDestroy);
+	}
 }
