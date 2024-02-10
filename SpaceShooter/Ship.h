@@ -1,23 +1,26 @@
 #pragma once
 #include "Entity.h"
 #include "ProjectileManager.h"
-#include "Projectile.h"
 
 class Ship: public Entity
 {
 public:
 	Ship();
-	Ship(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, float rateOfFire);
+	Ship(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, float rateOfFire, ProjectileManager* projMan);
 	~Ship();
 
 	void update() override;
 
-	void shootProjectile(ProjectileManager* pm, glm::vec2 vel);
+	ProjectileManager* pm;
+	Projectile* shootProjectile(glm::vec2 vel);
 	std::vector<Projectile*> projectiles;
 	int getShootCooldown();
+	bool checkCollisionFor(Entity* toCheck);
+	bool isShooting = false;
+	void removeProjectile(Projectile* p);
 
 protected:
-	int shootCooldown = 0;
+	int shootCooldown = std::rand()%240;
 	float fireRate = 2;
 };
 

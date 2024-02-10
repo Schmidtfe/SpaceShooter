@@ -5,7 +5,7 @@ class Actor: public Ship
 {
 public:
 	Actor();
-	Actor(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, int rateOfFire);
+	Actor(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, int rateOfFire, ProjectileManager* projMan);
 	~Actor();
 
 	void update() override;
@@ -18,7 +18,7 @@ public:
 	void showLivesFor(int time);
 
 protected:
-	int lives = 1;
+	int lives = 3;
 	bool invincible = false;
 	int invinCooldown = 0;
 	void blinkAnimation();

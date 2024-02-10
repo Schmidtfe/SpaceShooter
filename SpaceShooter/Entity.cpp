@@ -37,7 +37,6 @@ void Entity::update()
 		glm::vec2 velocity = glm::normalize(direction);
 		x += velocity.x * speed;
 		y += velocity.y * speed;
-		//std::cout << "(" << velocity.x << ", " << velocity.y << ")" << std::endl;
 	}
 
 	position = glm::vec2(x, y);
@@ -96,6 +95,11 @@ void Entity::setDirY(int y)
 glm::vec2 Entity::getPosition()
 {
 	return position;
+}
+
+glm::vec2 Entity::getSize()
+{
+	return glm::vec2(sizeRect.w, sizeRect.h);
 }
 
 void Entity::setPosition(glm::vec2 pos)

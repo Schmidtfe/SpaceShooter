@@ -5,7 +5,7 @@
 class ProjectileManager
 {
 public:
-	ProjectileManager();
+	ProjectileManager(int screenWidth, int screenHeight);
 	~ProjectileManager();
 
 	std::vector<Projectile*> projectiles;
@@ -13,6 +13,10 @@ public:
 	void render();
 	void addProjectile(Projectile* p);
 	void removeProjectile(Projectile* p);
-	void checkForCollisions(Entity* player, std::vector<Entity*> enemies);
+	int getWindowHeight();
+
+protected:
+	int windowHeight;
+	int windowWidth;
 };
 

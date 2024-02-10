@@ -3,7 +3,7 @@
 
 //std::vector<Entity*> enemies;
 
-EnemyManager::EnemyManager(SDL_Renderer *ren, Game* game)
+EnemyManager::EnemyManager(SDL_Renderer *ren, Game* game, ProjectileManager* projMan)
 {
 	cooldown = 60 * 3;
 	wave = 1;
@@ -11,6 +11,7 @@ EnemyManager::EnemyManager(SDL_Renderer *ren, Game* game)
 	prevEnemyNum = 0;
 	renderer = ren;
 	thisGame = game;
+	pm = projMan;
 	std::cout << enemies.size() << std::endl;
 	
 }
@@ -40,6 +41,7 @@ void EnemyManager::update()
 				}
 				else {
 					enemies[i]->setDirY(0);
+					enemies[i]->isShooting = true;
 				}
 
 				if (enemies[i]->getPosition().x <= 33 && enemies[i]->getDirX() < 0)
@@ -48,8 +50,8 @@ void EnemyManager::update()
 				if (enemies[i]->getPosition().x >= (800-33) && enemies[i]->getDirX() > 0)
 					enemies[i]->setDirX(-1);
 
-				if (enemies[i]->getShootCooldown() <= 0)
-					enemies[i]->shootProjectile(pm, glm::vec2(0, 1));
+				if (enemies[i]->isShooting && enemies[i]->getShootCooldown() <= 0)
+					pm->addProjectile(enemies[i]->shootProjectile(glm::vec2(0, 1)));
 
 				enemies[i]->update();
 			}
@@ -72,7 +74,7 @@ void EnemyManager::addEnemy(int index)
 {
 	//
 	int randomX = 32 + (std::rand() % (800 - 32 - 32 + 1));
-	Ship* enemy = new Ship("assets/enemy.png", renderer, randomX, -33, 2, 0.25f);
+	Ship* enemy = new Ship("assets/enemy.png", renderer, randomX, -33, 2, 0.25f, pm);
 	
 	int randomDir = (std::rand() % 1) * 2 - 1;
 	enemy->setDirX(randomDir);

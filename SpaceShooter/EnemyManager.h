@@ -8,7 +8,7 @@ class EnemyManager
 {
 public:
 	std::vector<Ship*> enemies;
-	EnemyManager(SDL_Renderer* ren, Game* game);
+	EnemyManager(SDL_Renderer* ren, Game* game, ProjectileManager* projMan);
 	~EnemyManager();
 
 	void update();

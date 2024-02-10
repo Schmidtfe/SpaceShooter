@@ -19,8 +19,8 @@ public:
 	int getDirY();
 	void setDirX(int x);
 	void setDirY(int y);
-	glm::vec2 position;
 	glm::vec2 getPosition();
+	glm::vec2 getSize();
 	void setPosition(glm::vec2 pos);
 	int num;
 
@@ -30,6 +30,7 @@ protected:
 	int speed = 4;
 	int lives = 1;
 	glm::vec2 direction;
+	glm::vec2 position;
 
 	SDL_Texture* texture;
 	SDL_Rect texRect, sizeRect;

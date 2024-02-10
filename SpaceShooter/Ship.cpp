@@ -5,10 +5,11 @@ Ship::Ship()
 	: Entity()
 {}
 
-Ship::Ship(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, float rateOfFire)
+Ship::Ship(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, float rateOfFire, ProjectileManager* projMan)
 	: Entity(textureSheet, ren, xpos, ypos, moveSpeed)
 {
 	fireRate = rateOfFire;
+	pm = projMan;
 	projectiles.clear();
 }
 
@@ -21,6 +22,14 @@ void Ship::update()
 	if (shootCooldown > 0) {
 		shootCooldown--;
 	}
+	for (Projectile* p : projectiles)
+	{
+		if (p->getPosition().y < 0 - p->getSize().y / 2 || p->getPosition().y > pm->getWindowHeight() + p->getSize().y / 2)
+		{
+			removeProjectile(p);
+			pm->removeProjectile(p);
+		}
+	}
 }
 
 int Ship::getShootCooldown()
@@ -28,15 +37,33 @@ int Ship::getShootCooldown()
 	return shootCooldown;
 }
 
-void Ship::shootProjectile(ProjectileManager* pm, glm::vec2 vel)
+Projectile* Ship::shootProjectile(glm::vec2 vel)
 {
 	if (shootCooldown <= 0)
 	{
 		//std::cout << "Shooting Projectile!" << std::endl;
 		Projectile* p = new Projectile("assets/projectile.png", renderer, x, y, 16, vel);
 		p->setSize(32);
-		pm->addProjectile(p);
 		projectiles.push_back(p);
 		shootCooldown = int(60.0f / fireRate);
+		return p;
+	}
+}
+
+bool Ship::checkCollisionFor(Entity* toCheck) 
+{
+	if (glm::length(getPosition() - toCheck->getPosition()) < getSize().x / 2 + toCheck->getSize().x / 2)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Ship::removeProjectile(Projectile* p)
+{
+	for (int i = 0; i < projectiles.size(); i++)
+	{
+		if (projectiles[i] == p)
+			projectiles.erase(projectiles.begin() + i);
 	}
 }

@@ -13,7 +13,8 @@ Game::Game()
 Game::~Game()
 {}
 
-Entity* toDestroy;
+Ship* toDestroyEnemy;
+Projectile* toDestroyProjectile;
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
@@ -49,15 +50,13 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	player = new Actor("assets/spaceship.png", renderer, windowWidth/2, windowHeight*7/8, 4, 2);
+
+	pm = new ProjectileManager(windowWidth, windowHeight);
+	em = new EnemyManager(renderer, this, pm);
+
+	player = new Actor("assets/spaceship.png", renderer, windowWidth / 2, windowHeight * 7 / 8, 4, 2, pm);
 	player->createLivesDisplay();
 	player->showLivesFor(60 * 3);
-
-	em = new EnemyManager(renderer, this);
-
-	pm = new ProjectileManager();
-	em->pm = pm;
-
 
 }
 
@@ -95,7 +94,8 @@ void Game::input()
 					player->addDirection(1, 0);
 				break;
 			case SDLK_SPACE:
-				player->shootProjectile(pm, glm::vec2(0, -1));
+				if (player->getShootCooldown() <= 0)
+					pm->addProjectile(player->shootProjectile(glm::vec2(0, -1)));
 				break;
 			default:
 				break;
@@ -147,8 +147,10 @@ void Game::update()
 			pm->update();
 
 			if (em->enemies.size() > 0)
-				if (em->enemies[0])
+				if (em->enemies[0] && player)
+				{
 					checkForCollision();
+				}
 		}
 		else {
 			pauseAndReset();
@@ -161,7 +163,7 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	//add stuff to render here
 	em->render();
-	if(player)
+	if (player)
 		player->render();
 	pm->render();
 
@@ -180,15 +182,16 @@ void Game::checkForCollision()
 {
 	if (em->enemies[0] != nullptr)
 	{
-		for (Entity* enemy : em->enemies)
+		for (Ship* enemy : em->enemies)
 		{
-			if (glm::length(player->getPosition() - enemy->getPosition()) < 64 && !player->isInvincible())
+			//check collision between Player and enemies
+			if (!player->isInvincible() && player->checkCollisionFor(enemy))
 			{
-				//std::cout << "Player colliding!" << std::endl;
+				//Pause the game for a brief moment, then kill enemy and damage player
 				int remainingLives = player->takeDamage();
 				std::cout << remainingLives << std::endl;
 				enemy->setTexture("assets/shatter.png");
-				toDestroy = enemy;
+				toDestroyEnemy = enemy;
 				player->setTexture("assets/shatter.png");
 				if (remainingLives == 0)
 				{
@@ -201,6 +204,41 @@ void Game::checkForCollision()
 				}
 			}
 
+			//check collision between Player's projectiles and enemies
+			for (Projectile* playerP : player->projectiles)
+			{
+				std::cout << "Player Projectiles on field: " << player->projectiles.size() << std::endl;
+				//kill enemy and destroy projectile
+				if (enemy->checkCollisionFor(playerP))
+				{
+					std::cout << "Enemy hit!" << std::endl;
+					em->removeEnemy(enemy);
+					pm->removeProjectile(playerP);
+					player->removeProjectile(playerP);
+				}
+			}
+
+			//check collision between Player and enemies' projectiles
+			for (Projectile* enemyP : enemy->projectiles)
+			{
+				if (player->checkCollisionFor(enemyP))
+				{
+					int remainingLives = player->takeDamage();
+					std::cout << remainingLives << std::endl;
+					toDestroyProjectile = enemyP;
+					enemy->removeProjectile(enemyP);
+					player->setTexture("assets/shatter.png");
+					if (remainingLives == 0)
+					{
+						std::cout << "Game Over!" << std::endl;
+						std::cout << "Points: " << points << std::endl;
+						player = nullptr;
+					}
+					else {
+						pauseTime = 60 * 1;
+					}
+				}
+			}
 		}
 	}
 }
@@ -212,11 +250,13 @@ void Game::pauseAndReset()
 	}
 	else {
 		pauseTime--;
-		player->setPosition( glm::vec2( windowWidth / 2, windowHeight * 7 / 8));
+		player->setPosition(glm::vec2(windowWidth / 2, windowHeight * 7 / 8));
 		player->setTexture("assets/spaceship.png");
 		player->showLivesFor(60 * 3);
 		player->setInvincible(60 * 3);
-		if (toDestroy)
-			em->removeEnemy(toDestroy);
+		if (toDestroyEnemy)
+			em->removeEnemy(toDestroyEnemy);
+		if (toDestroyProjectile)
+			pm->removeProjectile(toDestroyProjectile);
 	}
 }
