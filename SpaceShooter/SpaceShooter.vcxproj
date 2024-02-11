@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2-devel-2.30.0-VC\SDL2-2.30.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\lib\x64;C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2-devel-2.30.0-VC\SDL2-2.30.0\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2-devel-2.30.0-VC\SDL2-2.30.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2-devel-2.30.0-VC\SDL2-2.30.0\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -119,13 +119,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\boost_1_84_0\boost_1_84_0;C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SpaceShooter\glm;C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\glm-1.0.0-light\glm;C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Richard Schmidt\Desktop\Boxelware\Space Shooter\SpaceShooter\SDL2_image-devel-2.8.2-VC\SDL2_image-2.8.2\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
