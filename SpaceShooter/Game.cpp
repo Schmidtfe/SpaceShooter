@@ -9,7 +9,11 @@ EnemyManager* em;
 ProjectileManager* pm;
 
 Game::Game()
-{}
+{
+  points = 0;
+  count = 0;
+  pauseTime = 0;
+}
 Game::~Game()
 {}
 
@@ -21,8 +25,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	int flags = 0;
 	windowWidth = width;
 	windowHeight = height;
-	if (fullscreen)
-	{
+	if (fullscreen)	{
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
 
@@ -64,7 +67,7 @@ void Game::input()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+	//const Uint8* keyState = SDL_GetKeyboardState(NULL);
 	switch (event.type)
 	{
 	case SDL_QUIT:
@@ -180,9 +183,9 @@ void Game::clean()
 
 void Game::checkForCollision()
 {
-	if (em->enemies[0] != nullptr)
+	if (em->enemies[0])
 	{
-		for (Ship* enemy : em->enemies)
+	  for (Ship* enemy : em->enemies)
 		{
 			//check collision between Player and enemies
 			if (!player->isInvincible() && player->checkCollisionFor(enemy))
@@ -197,7 +200,7 @@ void Game::checkForCollision()
 				{
 					std::cout << "Game Over!" << std::endl;
 					std::cout << "Points: " << points << std::endl;
-					player = nullptr;
+					player = NULL;
 				}
 				else {
 					pauseTime = 60 * 1;
@@ -207,7 +210,7 @@ void Game::checkForCollision()
 			//check collision between Player's projectiles and enemies
 			for (Projectile* playerP : player->projectiles)
 			{
-				std::cout << "Player Projectiles on field: " << player->projectiles.size() << std::endl;
+			  //std::cout << "Player Projectiles on field: " << player->projectiles.size() << std::endl;
 				//kill enemy and destroy projectile
 				if (enemy->checkCollisionFor(playerP))
 				{
@@ -232,7 +235,7 @@ void Game::checkForCollision()
 					{
 						std::cout << "Game Over!" << std::endl;
 						std::cout << "Points: " << points << std::endl;
-						player = nullptr;
+						isRunning = false;
 					}
 					else {
 						pauseTime = 60 * 1;

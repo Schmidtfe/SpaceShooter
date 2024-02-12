@@ -8,9 +8,12 @@ Ship::Ship()
 Ship::Ship(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, float rateOfFire, ProjectileManager* projMan)
 	: Entity(textureSheet, ren, xpos, ypos, moveSpeed)
 {
-	fireRate = rateOfFire;
-	pm = projMan;
-	projectiles.clear();
+  isShooting = false;
+  fireRate = 2;
+  fireRate = rateOfFire;
+  pm = projMan;
+  projectiles.clear();
+  shootCooldown = std::rand()%240;
 }
 
 Ship::~Ship()
@@ -48,6 +51,7 @@ Projectile* Ship::shootProjectile(glm::vec2 vel)
 		shootCooldown = int(60.0f / fireRate);
 		return p;
 	}
+	return NULL;
 }
 
 bool Ship::checkCollisionFor(Entity* toCheck) 
@@ -61,7 +65,7 @@ bool Ship::checkCollisionFor(Entity* toCheck)
 
 void Ship::removeProjectile(Projectile* p)
 {
-	for (int i = 0; i < projectiles.size(); i++)
+	for (Uint8 i = 0; i < projectiles.size(); i++)
 	{
 		if (projectiles[i] == p)
 			projectiles.erase(projectiles.begin() + i);

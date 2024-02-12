@@ -24,7 +24,7 @@ private:
 	int cooldown;
 	int enemyNum;
 	int prevEnemyNum;
-	bool enemiesDefeated = true;
+	bool enemiesDefeated;
 
 	SDL_Renderer* renderer;
 };

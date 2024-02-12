@@ -25,16 +25,16 @@ public:
 	void pauseAndReset();
 	
 	SDL_Texture* tex;
-	int points = 0;
+	int points;
 
 private:
-	int count = 0;
+	int count;
 	bool isRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	int windowWidth;
 	int windowHeight;
-	int pauseTime = 0;
+	int pauseTime;
 
 };
 

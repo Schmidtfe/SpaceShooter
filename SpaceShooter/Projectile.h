@@ -9,8 +9,8 @@ public:
 	Projectile(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, glm::vec2 vel);
 	~Projectile();
 
-	void update() override;
-	void render() override;
+	void update();
+	void render();
 	glm::vec2 velocity;
 	void setSize(int size);
 

@@ -33,7 +33,7 @@ void ProjectileManager::addProjectile(Projectile* p)
 
 void ProjectileManager::removeProjectile(Projectile* p)
 {
-	for (int i = 0; i < projectiles.size(); i++)
+	for (Uint8 i = 0; i < projectiles.size(); i++)
 	{
 		if (projectiles[i] == p)
 		{

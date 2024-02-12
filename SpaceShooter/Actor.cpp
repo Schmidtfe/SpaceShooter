@@ -6,7 +6,12 @@ Actor::Actor()
 
 Actor::Actor(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed, int rateOfFire, ProjectileManager* projMan)
 	: Ship(textureSheet, ren, xpos, ypos, moveSpeed, rateOfFire, projMan)
-{}
+{
+	lives = 3;
+	invincible = false;
+	invinCooldown = 0;
+	liveDisTimer = 60 * 3;
+}
 
 Actor::~Actor()
 {}
@@ -16,10 +21,6 @@ void Actor::update()
 {
 	Ship::update();
 	setLiveDisplayPos();
-	if (direction != glm::vec2(0.0f, 0.0f))
-	{
-		glm::vec2 velocity = glm::normalize(Ship::direction);
-	}
 }
 
 void Actor::render()

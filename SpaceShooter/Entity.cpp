@@ -2,10 +2,15 @@
 
 
 Entity::Entity()
-{}
+{
+	speed = 4;
+	lives = 1;
+}
 
 Entity::Entity(const char* textureSheet, SDL_Renderer* ren, int xpos, int ypos, int moveSpeed)
 {
+	speed = 4;
+	lives = 1;
 	renderer = ren;
 	texture = loadTexture(textureSheet);
 	x = xpos;

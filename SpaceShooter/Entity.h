@@ -27,8 +27,8 @@ public:
 protected:
 	float x;
 	float y;
-	int speed = 4;
-	int lives = 1;
+	int speed;
+	int lives;
 	glm::vec2 direction;
 	glm::vec2 position;
 

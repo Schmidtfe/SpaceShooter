@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include "Game.h"
 
-Game* game = nullptr;
+Game* game;
 
 int main(int arc, char* argv[]) 
 {

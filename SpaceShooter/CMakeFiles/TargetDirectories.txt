@@ -1,0 +1,5 @@
+/home/felixschmidt/Desktop/SpaceShooter/SpaceShooter/CMakeFiles/rebuild_cache.dir
+/home/felixschmidt/Desktop/SpaceShooter/SpaceShooter/CMakeFiles/SpaceShooter.exe.dir
+/home/felixschmidt/Desktop/SpaceShooter/SpaceShooter/CMakeFiles/edit_cache.dir
+/home/felixschmidt/Desktop/SpaceShooter/SpaceShooter/glm/CMakeFiles/rebuild_cache.dir
+/home/felixschmidt/Desktop/SpaceShooter/SpaceShooter/glm/CMakeFiles/edit_cache.dir

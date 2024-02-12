@@ -12,6 +12,7 @@ EnemyManager::EnemyManager(SDL_Renderer *ren, Game* game, ProjectileManager* pro
 	renderer = ren;
 	thisGame = game;
 	pm = projMan;
+	enemiesDefeated = true;
 	std::cout << enemies.size() << std::endl;
 	
 }
@@ -33,7 +34,7 @@ void EnemyManager::update()
 			createEnemies();
 		}
 		else {
-			for (int i = 0; i < enemies.size(); i++)
+			for (Uint8 i = 0; i < enemies.size(); i++)
 			{
 				if (enemies[i]->getPosition().y < 48)
 				{
@@ -63,7 +64,7 @@ void EnemyManager::update()
 
 void EnemyManager::render()
 {
-	for (int i = 0; i < enemies.size(); i++)
+	for (Uint8 i = 0; i < enemies.size(); i++)
 	{
 		if(enemies[i])
 			enemies[i]->render();
@@ -84,7 +85,7 @@ void EnemyManager::addEnemy(int index)
 
 void EnemyManager::removeEnemy(Entity* toRemove)
 {
-	for (int i = 0; i < enemies.size(); i++)
+	for (Uint8 i = 0; i < enemies.size(); i++)
 	{
 		if (enemies[i] == toRemove)
 		{
@@ -110,7 +111,7 @@ void EnemyManager::createEnemies()
 
 	int currEnemyNum = enemies.size();
 	
-	for (int i = 0; i < currEnemyNum; i++)
+	for (Uint8 i = 0; i < currEnemyNum; i++)
 	{
 		addEnemy(i);
 		//std::cout << enemies[i]->num << std::endl;
